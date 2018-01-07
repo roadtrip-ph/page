@@ -25,7 +25,8 @@ module.exports = {
       include: [path.resolve(__dirname, "public/css")],
       use: extractLess.extract({
         use: [{
-          loader: "css-loader" // translates CSS into CommonJS
+          loader: "css-loader", // translates CSS into CommonJS
+          options: {url:false}
         }, {
           loader: "less-loader" // compiles Less to CSS
         }],
