@@ -2,10 +2,13 @@ const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const StyleExtPlugin = require("style-ext-html-webpack-plugin");
+
+const __DEV__ = process.env.NODE_ENV === "development";
 
 const extractLess = new ExtractTextPlugin({
   filename: "[name].[contenthash].css",
-  disable: process.env.NODE_ENV === "development"
+  disable: __DEV__
 });
 
 module.exports = {
@@ -40,8 +43,7 @@ module.exports = {
       template: path.resolve(__dirname, "public/index.html"),
       inject: true
     }),
-    process.env.NODE_ENV === "development"
-    ? false
+    __DEV__ ? false
     : new CopyPlugin([
       {
         from: path.resolve(__dirname, "public/img"),
@@ -51,6 +53,8 @@ module.exports = {
         from: path.resolve(__dirname, "public/favicon.png"),
         to: "favicon.png"
       }]),
-    extractLess
+    extractLess,
+    __DEV__ ? false
+    : new StyleExtPlugin()
   ]
 }
